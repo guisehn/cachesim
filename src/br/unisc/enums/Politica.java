@@ -4,16 +4,17 @@
  * and open the template in the editor.
  */
 
-package br.unisc;
+package br.unisc.enums;
 
 /**
  *
  * @author guilhermesehn
  */
-public class CacheSim {
-
-    public static void main(String[] args) {
-        
-    }
+public enum Politica {
+    
+    ALE,
+    COM,
+    LFU,
+    LRU;
     
 }
