@@ -37,6 +37,7 @@ public class CacheSim {
         }
 
         // só falta o resto :)
+        System.out.println("Hello world");
     }
     
     public static void erroArgumentos() {
