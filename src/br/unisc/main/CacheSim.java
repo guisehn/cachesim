@@ -6,7 +6,9 @@
 
 package br.unisc.main;
 
+import br.unisc.computador.MemoriaPrincipal;
 import br.unisc.enums.Politica;
+import br.unisc.exceptions.ArquivoInvalidoException;
 import java.io.File;
 
 /**
@@ -19,25 +21,30 @@ public class CacheSim {
         int tamanhoCache;
         int numeroConjuntos;
         Politica politica;
-        File arquivoEnderecos;
+        ArquivoEnderecos arquivoEnderecos;
         
         try {
             tamanhoCache = Integer.valueOf(args[0]);
             numeroConjuntos = Integer.valueOf(args[1]);
             politica = Politica.valueOf(args[2].toUpperCase());
-            arquivoEnderecos = new File(args[3]);
         } catch (Exception ex) {
             erroArgumentos();
             return;
         }
+
+        arquivoEnderecos = new ArquivoEnderecos(args[3]);
+        Integer[] enderecos;
         
-        if (!arquivoEnderecos.exists()) {
-            System.out.println(arquivoEnderecos.getName() + ": arquivo não encontrado");
+        try {
+            enderecos = arquivoEnderecos.buscarEnderecos();
+        } catch (ArquivoInvalidoException ex) {
+            System.out.println("Erro:");
+            System.out.println(ex.getMessage());
             return;
         }
 
-        // só falta o resto :)
-        System.out.println("Hello world");
+        int tamanhoEndereco = arquivoEnderecos.getTamanhoEndereco();
+        MemoriaPrincipal memoriaPrincipal = new MemoriaPrincipal(tamanhoEndereco);
     }
     
     public static void erroArgumentos() {
