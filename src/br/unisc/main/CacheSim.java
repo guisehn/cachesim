@@ -20,18 +20,23 @@ public class CacheSim {
         int tamanhoCache;
         int numeroConjuntos;
         Politica politica;
-        ArquivoEnderecos arquivoEnderecos;
+        String caminhoArquivoEnderecos;
         
         try {
             tamanhoCache = Integer.valueOf(args[0]);
             numeroConjuntos = Integer.valueOf(args[1]);
             politica = Politica.valueOf(args[2].toUpperCase());
+            caminhoArquivoEnderecos = args[3];
         } catch (IllegalArgumentException ex) {
             erroArgumentos(ex);
             return;
         }
 
-        arquivoEnderecos = new ArquivoEnderecos(args[3]);
+        lerArquivo(tamanhoCache, numeroConjuntos, politica, caminhoArquivoEnderecos);
+    }
+    
+    public static void lerArquivo(int tamanhoCache, int numeroConjuntos, Politica politica, String caminhoArquivoEnderecos) {
+        ArquivoEnderecos arquivoEnderecos = new ArquivoEnderecos(caminhoArquivoEnderecos);
         Integer[] enderecos;
         
         try {
@@ -44,10 +49,8 @@ public class CacheSim {
 
         int tamanhoEndereco = arquivoEnderecos.getTamanhoEndereco();
         MemoriaPrincipal memoriaPrincipal = new MemoriaPrincipal(tamanhoEndereco);
-        
-        String tamanhoMP = Utility.humanReadableByteCount(memoriaPrincipal.getTamanhoMemoria());
 
-        System.out.println("   Tam MP: " + tamanhoMP);
+        System.out.println("   Tam MP: " + Utility.humanReadableByteCount(memoriaPrincipal.getTamanhoMemoria()));
         System.out.println("Tam Cache: " + tamanhoCache + " KB");
         System.out.println(" Endereço: TO-DO");
         System.out.println(" Política: " + politica.getNome());
