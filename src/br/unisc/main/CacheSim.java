@@ -61,8 +61,7 @@ public class CacheSim {
         System.out.println("Argumentos inválidos");
         System.out.println("Execute passando os seguintes argumentos:");
         System.out.println();
-        System.out.println(" CSIZE_KB : Tamanho da memória cache (16, 32, 64, 128, 256 e 512) em" +
-                " KBytes");
+        System.out.println(" CSIZE_KB : Tamanho da memória cache (16, 32, 64, 128, 256 e 512) em KBytes");
         System.out.println("   N_WAYS : Número de conjuntos/vias/ways (1 ~ tamanho da cache)");
         System.out.println("   POLICY : Política de substituição (ale|com|lfu|lru)");
         System.out.println("ADDR_FILE : Arquivo qualquer com uma lista de endereços de N bits.");
