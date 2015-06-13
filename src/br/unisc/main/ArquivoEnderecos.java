@@ -80,7 +80,7 @@ public class ArquivoEnderecos {
         int i = 0;
         
         for (String bin : binarios) {
-            enderecos[i++] = Integer.parseInt(bin, 2);
+            enderecos[i++] = Integer.parseInt(bin.trim(), 2);
         }
         
         return enderecos;
