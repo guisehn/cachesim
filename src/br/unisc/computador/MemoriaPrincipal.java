@@ -14,10 +14,15 @@ package br.unisc.computador;
 public class MemoriaPrincipal {
     
     private final byte[] dados;
+    private int tamanhoMemoria = 0;
     
     public MemoriaPrincipal(int tamanhoEndereco) {
-        int tamanhoMemoria = (int)Math.pow(2, tamanhoEndereco);
+        tamanhoMemoria = (int)Math.pow(2, tamanhoEndereco);
         dados = new byte[tamanhoMemoria];
+    }
+    
+    public int getTamanhoMemoria() {
+        return tamanhoMemoria;
     }
     
 }

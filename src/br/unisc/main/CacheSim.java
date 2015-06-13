@@ -9,7 +9,6 @@ package br.unisc.main;
 import br.unisc.computador.MemoriaPrincipal;
 import br.unisc.enums.Politica;
 import br.unisc.exceptions.ArquivoInvalidoException;
-import java.io.File;
 
 /**
  *
@@ -27,8 +26,8 @@ public class CacheSim {
             tamanhoCache = Integer.valueOf(args[0]);
             numeroConjuntos = Integer.valueOf(args[1]);
             politica = Politica.valueOf(args[2].toUpperCase());
-        } catch (Exception ex) {
-            erroArgumentos();
+        } catch (IllegalArgumentException ex) {
+            erroArgumentos(ex);
             return;
         }
 
@@ -45,9 +44,16 @@ public class CacheSim {
 
         int tamanhoEndereco = arquivoEnderecos.getTamanhoEndereco();
         MemoriaPrincipal memoriaPrincipal = new MemoriaPrincipal(tamanhoEndereco);
+        
+        System.out.println("   Tam MP: "
+                + Utility.humanReadableByteCount(memoriaPrincipal.getTamanhoMemoria()));
+        System.out.println("Tam Cache: " + tamanhoCache + " KB");
+        System.out.println(" Endereço: TO-DO");
+        System.out.println(" Política: " + politica.getNome());
+        System.out.println(" Hit-rate: TO-DO");
     }
     
-    public static void erroArgumentos() {
+    public static void erroArgumentos(Exception ex) {
         System.out.println("Argumentos inválidos");
         System.out.println("Execute passando os seguintes argumentos:");
         System.out.println();
@@ -59,5 +65,5 @@ public class CacheSim {
         System.out.println();
         System.out.println("Exemplo: ./cachesim 16 8 ale addresses.txt");
     }
-    
+  
 }
