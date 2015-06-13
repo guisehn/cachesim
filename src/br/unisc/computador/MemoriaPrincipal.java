@@ -21,9 +21,8 @@ public class MemoriaPrincipal {
     
     public MemoriaPrincipal(int tamanhoEndereco, int enderecosPorBloco) {
         this.enderecosPorBloco = enderecosPorBloco;
-        
-        tamanhoMemoria = (int)Math.pow(2, tamanhoEndereco);
-        enderecos = new byte[tamanhoMemoria];
+        this.tamanhoMemoria = (int)Math.pow(2, tamanhoEndereco);
+        this.enderecos = new byte[tamanhoMemoria];
     }
     
     public int getTamanhoMemoria() {
