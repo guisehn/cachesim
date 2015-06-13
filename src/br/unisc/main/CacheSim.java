@@ -27,7 +27,7 @@ public class CacheSim {
             numeroConjuntos = Integer.valueOf(args[1]);
             politica = Politica.valueOf(args[2].toUpperCase());
             caminhoArquivoEnderecos = args[3];
-        } catch (IllegalArgumentException ex) {
+        } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException ex) {
             erroArgumentos(ex);
             return;
         }

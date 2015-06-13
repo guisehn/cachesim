@@ -25,7 +25,7 @@ public class ArquivoEnderecos {
     public ArquivoEnderecos(String caminho) {
         arquivo = new File(caminho);
     }
-    
+
     public Integer[] buscarEnderecos() throws ArquivoInvalidoException {
         if (!arquivo.exists()) {
             throw new ArquivoInvalidoException(arquivo, "Arquivo não encontrado");
@@ -50,7 +50,7 @@ public class ArquivoEnderecos {
                 validarLinha(linha);
             }
             
-            enderecos = binariosParaDecimais(arrayLinhas);
+            enderecos = stringsBinariasParaInteiros(arrayLinhas);
         } catch (IOException ex) {
             throw new ArquivoInvalidoException(arquivo, "Erro ao ler arquivo");
         }
@@ -72,7 +72,7 @@ public class ArquivoEnderecos {
         }
     }
     
-    private Integer[] binariosParaDecimais(String[] binarios) {
+    private Integer[] stringsBinariasParaInteiros(String[] binarios) {
         Integer[] enderecos = new Integer[binarios.length];
         int i = 0;
         
