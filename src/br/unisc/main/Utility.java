@@ -26,4 +26,8 @@ public class Utility {
         return String.format("%s %sB", n, pre);
     }
     
+    public static double log2(double n) {
+        return Math.log10(n) / Math.log10(2);
+    }
+    
 }
