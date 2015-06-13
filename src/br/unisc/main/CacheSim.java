@@ -45,8 +45,9 @@ public class CacheSim {
         int tamanhoEndereco = arquivoEnderecos.getTamanhoEndereco();
         MemoriaPrincipal memoriaPrincipal = new MemoriaPrincipal(tamanhoEndereco);
         
-        System.out.println("   Tam MP: "
-                + Utility.humanReadableByteCount(memoriaPrincipal.getTamanhoMemoria()));
+        String tamanhoMP = Utility.humanReadableByteCount(memoriaPrincipal.getTamanhoMemoria());
+
+        System.out.println("   Tam MP: " + tamanhoMP);
         System.out.println("Tam Cache: " + tamanhoCache + " KB");
         System.out.println(" Endereço: TO-DO");
         System.out.println(" Política: " + politica.getNome());
