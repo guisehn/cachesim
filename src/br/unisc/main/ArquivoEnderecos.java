@@ -43,8 +43,7 @@ public class ArquivoEnderecos {
             tamanhoEndereco = arrayLinhas[0].length();
             
             if (tamanhoEndereco == 0) {
-                throw new ArquivoInvalidoException(arquivo, "Endereço de memória deve ter ao"
-                    + " menos um bit");
+                throw new ArquivoInvalidoException(arquivo, "Endereço de memória deve ter ao menos um bit");
             }
             
             for (String linha : arrayLinhas) {
@@ -65,13 +64,11 @@ public class ArquivoEnderecos {
     
     private void validarLinha(String linha) throws ArquivoInvalidoException {
         if (linha.length() != tamanhoEndereco) {
-            throw new ArquivoInvalidoException(arquivo, "Todos os endereços de memória devem ter"
-                + " o mesmo tamanho");
+            throw new ArquivoInvalidoException(arquivo, "Todos os endereços de memória devem ter o mesmo tamanho");
         }
 
         if (!linha.trim().matches("[01]+")) {
-            throw new ArquivoInvalidoException(arquivo, "Os endereços de memória devem ser" +
-                " representados em formato binário");
+            throw new ArquivoInvalidoException(arquivo, "Os endereços de memória devem ser representados em formato binário");
         }
     }
     
