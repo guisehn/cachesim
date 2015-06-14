@@ -53,10 +53,9 @@ public class MemoriaCache {
     }
 
     public byte buscarEndereco(int endereco) {
-        quantidadeBuscas++;
-        
         int tag = getTag(endereco);
         int indiceConjunto = getIndex(endereco);
+        byte[] dadosBloco;
         
         BlocoCache[] conjunto = conjuntos[indiceConjunto];
         BlocoCache blocoEncontrado = null;
@@ -67,36 +66,37 @@ public class MemoriaCache {
                 break;
             }
         }
-
-        byte[] dadosBloco;
         
+        quantidadeBuscas++;
+
         if (blocoEncontrado != null) {
             quantidadeHits++;
             dadosBloco = blocoEncontrado.getDados();
         } else {
             quantidadeMisses++;
-            dadosBloco = memoriaPrincipal.getBlocoPorEndereco(endereco);
-
-            blocoEncontrado = new BlocoCache();
-            blocoEncontrado.setValido(true);
-            blocoEncontrado.setTag(tag);
-            blocoEncontrado.setDados(dadosBloco);
-            
-            gravarCache(conjunto, blocoEncontrado);
+            dadosBloco = memoriaPrincipal.getBlocoPorEndereco(endereco);            
+            gravarCache(conjunto, tag, dadosBloco);
         }
 
         int offset = getOffset(endereco);
         return dadosBloco[offset];
     }
     
-    private void gravarCache(BlocoCache[] conjunto, BlocoCache bloco) {
+    private BlocoCache gravarCache(BlocoCache[] conjunto, int tag, byte[] dadosBloco) {
+        int posicao = 0;
+        
         if (politicaSubstituicao == PoliticaSubstituicao.ALE) {
-            int posicao = Utility.randInt(0, tamanhoConjunto - 1);
-            conjunto[posicao] = bloco;
-            return;
+            posicao = Utility.randInt(0, tamanhoConjunto - 1);
         }
 
-        // to-do: outras políticas de substituições
+        // to-do: outras políticas de substituição
+
+        BlocoCache bloco = conjunto[posicao];
+        bloco.setValido(true);
+        bloco.setTag(tag);
+        bloco.setDados(dadosBloco);
+        
+        return bloco;
     }
     
     public int getTamanhoCache() {
