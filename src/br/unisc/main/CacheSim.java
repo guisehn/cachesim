@@ -80,7 +80,7 @@ public class CacheSim {
                 cache.getTamanhoTag(), cache.getTamanhoIndex(), cache.getTamanhoOffset());
         System.out.println();
 
-        System.out.format(" Hit-rate: %s%%", cache.getHitRate());
+        System.out.format(" Hit-rate: %s%%", Utility.doubleToString(cache.getHitRate() * 100));
         System.out.println();
     }
     

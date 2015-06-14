@@ -138,12 +138,12 @@ public class MemoriaCache {
         return tamanhoEndereco - tamanhoIndex - tamanhoOffset;
     }
     
-    public int getHitRate() {
-        return (quantidadeHits * 100) / quantidadeBuscas;
+    public double getHitRate() {
+        return (double)quantidadeHits / (double)quantidadeBuscas;
     }
     
-    public int getMissRate() {
-        return (quantidadeMisses * 100) / quantidadeBuscas;
+    public double getMissRate() {
+        return (double)quantidadeMisses / (double)quantidadeBuscas;
     }
     
     public PoliticaSubstituicao getPoliticaSubstituicao() {

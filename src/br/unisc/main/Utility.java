@@ -22,9 +22,12 @@ public class Utility {
         int exp = (int) (Math.log(bytes) / Math.log(unit));
         char pre = "KMGTPE".charAt(exp - 1);
         double r = bytes / Math.pow(unit, exp);
+        return String.format("%s %sB", doubleToString(r), pre);
+    }
+    
+    public static String doubleToString(double n) {
         NumberFormat nf = new DecimalFormat("##.###");
-        String n = nf.format(r);
-        return String.format("%s %sB", n, pre);
+        return nf.format(n);
     }
     
     public static double log2(double n) {
