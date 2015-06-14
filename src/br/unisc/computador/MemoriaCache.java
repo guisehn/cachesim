@@ -12,8 +12,12 @@ package br.unisc.computador;
  */
 public class MemoriaCache {
     
-    public MemoriaCache(int tamanhoKb) {
-        
+    private int quantidadeConjuntos;
+    private int tamanho;
+    
+    public MemoriaCache(int tamanhoKb, int quantidadeConjuntos) {
+        this.tamanho = tamanhoKb * 1024;
+        this.quantidadeConjuntos = quantidadeConjuntos;
     }
     
 }
