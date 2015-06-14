@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class ArquivoEnderecos {
@@ -16,6 +17,11 @@ public class ArquivoEnderecos {
         arquivo = new File(caminho);
     }
 
+    /**
+     * Retorna os endereços do arquivo em formato inteiro
+     * @return Lista de endereços em formato inteiro
+     * @throws ArquivoInvalidoException Erro de formato do arquivo
+     */
     public Integer[] buscarEnderecos() throws ArquivoInvalidoException {
         if (!arquivo.exists()) {
             throw new ArquivoInvalidoException(arquivo, "Arquivo não encontrado");
@@ -30,7 +36,7 @@ public class ArquivoEnderecos {
                 throw new ArquivoInvalidoException(arquivo, "O arquivo está vazio");
             }
             
-            tamanhoEndereco = arrayLinhas[0].length();
+            this.tamanhoEndereco = arrayLinhas[0].length();
             
             if (tamanhoEndereco == 0) {
                 throw new ArquivoInvalidoException(arquivo, "Endereço de memória deve ter ao menos um bit");
@@ -48,10 +54,11 @@ public class ArquivoEnderecos {
         return enderecos;
     }
     
-    public int getTamanhoEndereco() {
-        return tamanhoEndereco;
-    }
-    
+    /**
+     * Valida uma linha do arquivo
+     * @param linha Conteúdo da linha a ser validada
+     * @throws ArquivoInvalidoException Erro de formato
+     */
     private void validarLinha(String linha) throws ArquivoInvalidoException {
         if (linha.length() != tamanhoEndereco) {
             throw new ArquivoInvalidoException(arquivo, "Todos os endereços de memória devem ter o mesmo tamanho");
@@ -62,15 +69,17 @@ public class ArquivoEnderecos {
         }
     }
     
+    /**
+     * Converte array de strings contendo linhas em binário para array de inteiros
+     * @param binarios Array de strings em binário
+     * @return Array de inteiros
+     */
     private Integer[] stringsBinariasParaInteiros(String[] binarios) {
-        Integer[] enderecos = new Integer[binarios.length];
-        int i = 0;
-        
-        for (String bin : binarios) {
-            enderecos[i++] = Integer.parseInt(bin.trim(), 2);
-        }
-        
-        return enderecos;
+        return Arrays.stream(binarios).map(str -> Integer.parseInt(str, 2)).toArray(s -> new Integer[s]);
+    }
+    
+    public int getTamanhoEndereco() {
+        return tamanhoEndereco;
     }
     
 }

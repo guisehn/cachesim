@@ -16,6 +16,44 @@ public class MemoriaPrincipal {
         this.enderecos = new byte[tamanhoMemoria];
     }
     
+    /**
+     * Busca bloco na memória através de seu índice
+     * @param indiceBloco Índice do bloco
+     * @return Conteúdo do bloco
+     */
+    public byte[] getBloco(int indiceBloco) {
+        int primeiroEnderecoBloco = indiceBloco * tamanhoBloco;
+        return Arrays.copyOfRange(enderecos, primeiroEnderecoBloco, primeiroEnderecoBloco + tamanhoBloco);
+    }
+    
+    /**
+     * Busca bloco na memória através de um endereço que está dentro do bloco
+     * @param endereco Endereço de memória
+     * @return Conteúdo do bloco
+     */
+    public byte[] getBlocoPorEndereco(int endereco) {
+        int indiceBloco = (int)Math.floor(endereco / tamanhoBloco);
+        return getBloco(indiceBloco);
+    }
+
+    /**
+     * Busca o dado de um endereço de memória diretamente
+     * @param endereco Endereço
+     * @return Dados
+     */
+    public byte getValorEndereco(int endereco) {
+        return enderecos[endereco];
+    }
+
+    /**
+     * Define o valor de um endereço de memória diretamente
+     * @param endereco Endereço
+     * @param dado Dado a ser gravado
+     */
+    public void setValorEndereco(int endereco, byte dado) {
+        enderecos[endereco] = dado;
+    }
+
     public int getTamanhoMemoria() {
         return tamanhoMemoria;
     }
@@ -26,24 +64,6 @@ public class MemoriaPrincipal {
     
     public int getTamanhoBloco() {
         return tamanhoBloco;
-    }
-    
-    public byte[] getBloco(int numBloco) {
-        int primeiroEnderecoBloco = numBloco * tamanhoBloco;
-        return Arrays.copyOfRange(enderecos, primeiroEnderecoBloco, primeiroEnderecoBloco + tamanhoBloco);
-    }
-    
-    public byte[] getBlocoPorEndereco(int endereco) {
-        int numBloco = (int)Math.floor(endereco / tamanhoBloco);
-        return getBloco(numBloco);
-    }
-
-    public byte getValorEndereco(int endereco) {
-        return enderecos[endereco];
-    }
-    
-    public void setValorEndereco(int endereco, byte valor) {
-        enderecos[endereco] = valor;
     }
     
 }

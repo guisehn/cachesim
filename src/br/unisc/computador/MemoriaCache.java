@@ -4,7 +4,6 @@ import br.unisc.enums.PoliticaSubstituicao;
 import br.unisc.main.Utility;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 public class MemoriaCache {
     
@@ -61,10 +60,9 @@ public class MemoriaCache {
      * @return Dado do endereço
      */
     public byte buscarEndereco(int endereco) {
+        byte[] dadosBloco;
         int tag = getTag(endereco);
         int indiceConjunto = getIndex(endereco);
-        byte[] dadosBloco;
-        
         BlocoCache[] conjunto = conjuntos[indiceConjunto];
         Optional<BlocoCache> bloco = lookup(conjunto, tag);
         
