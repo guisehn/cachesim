@@ -58,14 +58,7 @@ public class MemoriaCache {
         byte[] dadosBloco;
         
         BlocoCache[] conjunto = conjuntos[indiceConjunto];
-        BlocoCache blocoEncontrado = null;
-        
-        for (BlocoCache bloco : conjunto) {
-            if (bloco.isValido() && bloco.getTag() == tag) {
-                blocoEncontrado = bloco;
-                break;
-            }
-        }
+        BlocoCache blocoEncontrado = lookup(conjunto, tag);
         
         quantidadeBuscas++;
 
@@ -137,6 +130,25 @@ public class MemoriaCache {
     
     public PoliticaSubstituicao getPoliticaSubstituicao() {
         return politicaSubstituicao;
+    }
+    
+    /**
+     * Busca bloco em um conjunto (através da tag)
+     * @param conjunto Conjunto para buscar o bloco
+     * @param tag Tag do endereço
+     * @return Bloco encontrado, ou nulo caso não encontrado
+     */
+    private BlocoCache lookup(BlocoCache[] conjunto, int tag) {
+        BlocoCache blocoEncontrado = null;
+        
+        for (BlocoCache bloco : conjunto) {
+            if (bloco.isValido() && bloco.getTag() == tag) {
+                blocoEncontrado = bloco;
+                break;
+            }
+        }
+        
+        return blocoEncontrado;
     }
     
     /**
