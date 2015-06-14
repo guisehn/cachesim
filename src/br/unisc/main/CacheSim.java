@@ -52,10 +52,6 @@ public class CacheSim {
 
         int tamanhoEndereco = arquivoEnderecos.getTamanhoEndereco();
         MemoriaPrincipal memoriaPrincipal = new MemoriaPrincipal(tamanhoEndereco, ENDERECOS_POR_BLOCO);
-
-        int offset = (int)Utility.log2(ENDERECOS_POR_BLOCO);
-        int index = (int)Utility.log2(numeroConjuntos);
-        int tag = tamanhoEndereco - index - offset;
         
         MemoriaCache memoriaCache = new MemoriaCache(memoriaPrincipal, tamanhoEndereco, tamanhoCache * 1024, ENDERECOS_POR_BLOCO,
                 numeroConjuntos);
@@ -70,8 +66,8 @@ public class CacheSim {
         
         System.out.println("   Tam MP: " + Utility.humanReadableByteCount(memoriaPrincipal.getTamanhoMemoria()));
         System.out.println("Tam Cache: " + tamanhoCache + " KB");
-        System.out.println(" Endereço: " + tamanhoEndereco + " bits - " + tag + ", " + index + ", " + offset + " bits" +
-                " (rotulo, conjunto, palavra)");
+        System.out.println(" Endereço: " + tamanhoEndereco + " bits - " + memoriaCache.getTag() + ", " + memoriaCache.getIndex()
+                + ", " + memoriaCache.getOffset() + " bits (rotulo, conjunto, palavra)");
         System.out.println(" Política: " + politica.getNome());
         System.out.println(" Hit-rate: " + hitRate + "%");
     }

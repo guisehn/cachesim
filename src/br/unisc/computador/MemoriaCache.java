@@ -30,7 +30,7 @@ public class MemoriaCache {
     private final MemoriaPrincipal memoriaPrincipal;
     
     // Primeiro índice = conjunto. Segundo índice = offset do bloco
-    private BlocoCache[][] conjuntos;
+    private final BlocoCache[][] conjuntos;
     
     public MemoriaCache(MemoriaPrincipal mp, int tamanhoEndereco, int tamanhoCache, int tamanhoBloco, int quantidadeConjuntos) {
         this.memoriaPrincipal = mp;
@@ -109,6 +109,18 @@ public class MemoriaCache {
     
     public int getQuantidadeHits() {
         return quantidadeHits;
+    }
+    
+    public int getIndex() {
+        return index;
+    }
+    
+    public int getOffset() {
+        return offset;
+    }
+    
+    public int getTag() {
+        return tamanhoEndereco - index - offset;
     }
     
 }
