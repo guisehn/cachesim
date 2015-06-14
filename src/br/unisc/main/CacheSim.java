@@ -57,8 +57,10 @@ public class CacheSim {
         MemoriaCache memoriaCache = new MemoriaCache(memoriaPrincipal, tamanhoEndereco, tamanhoCache * 1024, ENDERECOS_POR_BLOCO,
                 numeroConjuntos, politicaSubstituicao);
         
+        int i = 0;
         for (Integer endereco : enderecos) {
             memoriaCache.buscarEndereco(endereco);
+            i++;
         }
         
         int quantidadeHits = memoriaCache.getQuantidadeHits();
