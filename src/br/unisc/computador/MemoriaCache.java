@@ -55,9 +55,8 @@ public class MemoriaCache {
     public byte buscarEndereco(int endereco) {
         quantidadeBuscas++;
         
-        int tag = endereco >> (tamanhoOffset + tamanhoIndex);        
-        int indiceConjunto = endereco >> tamanhoOffset; // remove o offset do endereço
-        indiceConjunto = indiceConjunto & ((1 << tamanhoIndex) - 1); // busca apenas os bits do índice do conjunto
+        int tag = getTag(endereco);
+        int indiceConjunto = getIndex(endereco);
         
         BlocoCache[] conjunto = conjuntos[indiceConjunto];
         BlocoCache blocoEncontrado = null;
@@ -86,7 +85,7 @@ public class MemoriaCache {
             gravarCache(conjunto, blocoEncontrado);
         }
 
-        int offset = endereco & ((1 << tamanhoOffset) - 1); // busca o offset dentro do endereço
+        int offset = getOffset(endereco);
         return dadosBloco[offset];
     }
     
@@ -138,6 +137,35 @@ public class MemoriaCache {
     
     public PoliticaSubstituicao getPoliticaSubstituicao() {
         return politicaSubstituicao;
+    }
+    
+    /**
+     * Busca a posição dentro do bloco em que o endereço se encontra (offset)
+     * @param endereco Endereço de memória
+     * @return Offset
+     */
+    private int getOffset(int endereco) {
+        return endereco & ((1 << tamanhoOffset) - 1); // mantém apenas os N bits menos significativos, sendo N = tamanhoOffset
+    }
+    
+    /**
+     * Busca o índice do conjunto em que o endereço se encontra
+     * @param endereco Endereço de memória
+     * @return Índice do conjunto
+     */
+    private int getIndex(int endereco) {
+        int index = endereco >> tamanhoOffset; // remove o offset do endereço
+        index = index & ((1 << tamanhoIndex) - 1); // mantém apenas os N bits menos significativos, sendo N = tamanhoIndex
+        return index;
+    }
+    
+    /**
+     * Busca os bits referentes à tag do endereço
+     * @param endereco Endereço de memória
+     * @return Tag
+     */
+    private int getTag(int endereco) {
+        return endereco >> (tamanhoOffset + tamanhoIndex); // tag = endereço - index - offset
     }
     
 }
