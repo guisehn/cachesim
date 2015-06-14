@@ -20,10 +20,11 @@ public class MemoriaCache {
     private final int tamanhoCache;
     private final int tamanhoBloco;
     private final int tamanhoConjunto;
-    private final int offset;
-    private final int index;
+    private final int tamanhoOffset;
+    private final int tamanhoIndex;
     private final PoliticaSubstituicao politicaSubstituicao;
     
+    // Quantidade de buscas, hits e misses na memória cache
     private int quantidadeBuscas;
     private int quantidadeHits;
     private int quantidadeMisses;
@@ -31,19 +32,18 @@ public class MemoriaCache {
     // Referência para a memória principal
     private final MemoriaPrincipal memoriaPrincipal;
     
-    // Primeiro índice = conjunto. Segundo índice = offset do bloco
+    // Primeiro índice = conjunto. Segundo índice = tamanhoOffset do bloco
     private final BlocoCache[][] conjuntos;
     
-    public MemoriaCache(MemoriaPrincipal mp, int tamanhoEndereco, int tamanhoCache, int tamanhoBloco, int quantidadeConjuntos,
-            PoliticaSubstituicao politicaSubstituicao) {
+    public MemoriaCache(MemoriaPrincipal mp, int tamanhoCache, int quantidadeConjuntos, PoliticaSubstituicao politica) {
         this.memoriaPrincipal = mp;
-        this.tamanhoEndereco = tamanhoEndereco;
+        this.tamanhoBloco = mp.getTamanhoBloco();
+        this.tamanhoEndereco = mp.getTamanhoEndereco();
         this.tamanhoCache = tamanhoCache;
-        this.tamanhoBloco = tamanhoBloco;
         this.quantidadeConjuntos = quantidadeConjuntos;
-        this.offset = (int)Utility.log2(tamanhoBloco);
-        this.index = (int)Utility.log2(quantidadeConjuntos);
-        this.politicaSubstituicao = politicaSubstituicao;
+        this.tamanhoOffset = (int)Utility.log2(tamanhoBloco);
+        this.tamanhoIndex = (int)Utility.log2(quantidadeConjuntos);
+        this.politicaSubstituicao = politica;
         this.quantidadeBuscas = 0;
         this.quantidadeMisses = 0;
         this.quantidadeHits = 0;
@@ -65,9 +65,9 @@ public class MemoriaCache {
     public byte buscarEndereco(int endereco) {
         quantidadeBuscas++;
         
-        int tag = endereco >> (offset + index);        
-        int indiceConjunto = endereco >> offset; // remove o offset do endereço
-        indiceConjunto = indiceConjunto & ((1 << index) - 1); // busca apenas os bits do índice do conjunto
+        int tag = endereco >> (tamanhoOffset + tamanhoIndex);        
+        int indiceConjunto = endereco >> tamanhoOffset; // remove o offset do endereço
+        indiceConjunto = indiceConjunto & ((1 << tamanhoIndex) - 1); // busca apenas os bits do índice do conjunto
         
         BlocoCache[] conjunto = conjuntos[indiceConjunto];
         BlocoCache blocoEncontrado = null;
@@ -96,8 +96,8 @@ public class MemoriaCache {
             gravarCache(conjunto, blocoEncontrado);
         }
 
-        int i = endereco & ((1 << offset) - 1); // deixa apenas o offset
-        return dadosBloco[i];
+        int offset = endereco & ((1 << tamanhoOffset) - 1); // busca o offset dentro do endereço
+        return dadosBloco[offset];
     }
     
     private void gravarCache(BlocoCache[] conjunto, BlocoCache bloco) {
@@ -108,6 +108,10 @@ public class MemoriaCache {
         }
 
         // to-do: outras políticas de substituições
+    }
+    
+    public int getTamanhoCache() {
+        return tamanhoCache;
     }
     
     public int getQuantidadeBuscas() {
@@ -122,16 +126,28 @@ public class MemoriaCache {
         return quantidadeHits;
     }
     
-    public int getIndex() {
-        return index;
+    public int getTamanhoIndex() {
+        return tamanhoIndex;
     }
     
-    public int getOffset() {
-        return offset;
+    public int getTamanhoOffset() {
+        return tamanhoOffset;
     }
     
-    public int getTag() {
-        return tamanhoEndereco - index - offset;
+    public int getTamanhoTag() {
+        return tamanhoEndereco - tamanhoIndex - tamanhoOffset;
+    }
+    
+    public int getHitRate() {
+        return (quantidadeHits * 100) / quantidadeBuscas;
+    }
+    
+    public int getMissRate() {
+        return (quantidadeMisses * 100) / quantidadeBuscas;
+    }
+    
+    public PoliticaSubstituicao getPoliticaSubstituicao() {
+        return politicaSubstituicao;
     }
     
 }

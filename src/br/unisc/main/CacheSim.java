@@ -52,27 +52,36 @@ public class CacheSim {
         }
 
         int tamanhoEndereco = arquivoEnderecos.getTamanhoEndereco();
-        MemoriaPrincipal memoriaPrincipal = new MemoriaPrincipal(tamanhoEndereco, ENDERECOS_POR_BLOCO);
+        MemoriaPrincipal mp = new MemoriaPrincipal(tamanhoEndereco, ENDERECOS_POR_BLOCO);
+        MemoriaCache cache = new MemoriaCache(mp, tamanhoCache * 1024, numeroConjuntos, politicaSubstituicao);
         
-        MemoriaCache memoriaCache = new MemoriaCache(memoriaPrincipal, tamanhoEndereco, tamanhoCache * 1024, ENDERECOS_POR_BLOCO,
-                numeroConjuntos, politicaSubstituicao);
-        
+        buscarEnderecos(cache, enderecos);
+        imprimirResultados(mp, cache);
+    }
+    
+    private static void buscarEnderecos(MemoriaCache cache, Integer[] enderecos) {
         int i = 0;
         for (Integer endereco : enderecos) {
-            memoriaCache.buscarEndereco(endereco);
+            cache.buscarEndereco(endereco);
             i++;
         }
-        
-        int quantidadeHits = memoriaCache.getQuantidadeHits();
-        int quantidadeBuscas = memoriaCache.getQuantidadeBuscas();
-        int hitRate = (quantidadeHits * 100) / quantidadeBuscas;
-        
-        System.out.println("   Tam MP: " + Utility.humanReadableByteCount(memoriaPrincipal.getTamanhoMemoria()));
-        System.out.println("Tam Cache: " + tamanhoCache + " KB");
-        System.out.println(" Endereço: " + tamanhoEndereco + " bits - " + memoriaCache.getTag() + ", " + memoriaCache.getIndex()
-                + ", " + memoriaCache.getOffset() + " bits (rotulo, conjunto, palavra)");
-        System.out.println(" Política: " + politicaSubstituicao.getNome());
-        System.out.println(" Hit-rate: " + hitRate + "%");
+    }
+    
+    private static void imprimirResultados(MemoriaPrincipal mp, MemoriaCache cache) {        
+        String tamanhoMemoriaPrincipal = Utility.humanReadableByteCount(mp.getTamanhoMemoria());
+
+        System.out.format("   Tam MP: %s", tamanhoMemoriaPrincipal);
+        System.out.println();
+
+        System.out.format("Tam Cache: %s KB", (cache.getTamanhoCache() / 1024));
+        System.out.println();
+
+        System.out.format(" Endereço: %s bits, %s, %s, %s bits (rotulo, conjunto, palavra)", mp.getTamanhoEndereco(),
+                cache.getTamanhoTag(), cache.getTamanhoIndex(), cache.getTamanhoOffset());
+        System.out.println();
+
+        System.out.format(" Hit-rate: %s%%", cache.getHitRate());
+        System.out.println();
     }
     
     private static void erroArgumentos(Exception ex) {
