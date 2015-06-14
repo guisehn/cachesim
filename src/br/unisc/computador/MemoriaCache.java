@@ -65,8 +65,7 @@ public class MemoriaCache {
     public byte buscarEndereco(int endereco) {
         quantidadeBuscas++;
         
-        int tag = endereco >> (offset + index);
-        
+        int tag = endereco >> (offset + index);        
         int indiceConjunto = endereco >> offset; // remove o offset do endereço
         indiceConjunto = indiceConjunto & ((1 << index) - 1); // busca apenas os bits do índice do conjunto
         

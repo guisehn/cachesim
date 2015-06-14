@@ -17,9 +17,9 @@ import static org.junit.Assert.*;
  *
  * @author guilhermesehn
  */
-public class MemoriaCacheTest {
+public class MemoriaPrincipalTest {
     
-    public MemoriaCacheTest() {
+    public MemoriaPrincipalTest() {
     }
     
     @BeforeClass
