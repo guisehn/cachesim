@@ -104,6 +104,10 @@ public class MemoriaCache {
         return quantidadeMisses;
     }
     
+    public int getQuantidadeConjuntos() {
+        return quantidadeConjuntos;
+    }
+    
     public int getQuantidadeHits() {
         return quantidadeHits;
     }
