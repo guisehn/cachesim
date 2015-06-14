@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package br.unisc.main;
 
 import br.unisc.exceptions.ArquivoInvalidoException;
@@ -13,10 +7,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.stream.Stream;
 
-/**
- *
- * @author guilhermesehn
- */
 public class ArquivoEnderecos {
     
     private final File arquivo;

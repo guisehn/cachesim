@@ -1,18 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package br.unisc.computador;
 
 import java.util.Arrays;
 
-
-/**
- *
- * @author guilhermesehn
- */
 public class MemoriaPrincipal {
 
     private final byte[] enderecos;

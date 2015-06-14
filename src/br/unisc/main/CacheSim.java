@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package br.unisc.main;
 
 import br.unisc.computador.MemoriaCache;
@@ -11,10 +5,6 @@ import br.unisc.computador.MemoriaPrincipal;
 import br.unisc.enums.PoliticaSubstituicao;
 import br.unisc.exceptions.ArquivoInvalidoException;
 
-/**
- *
- * @author guilhermesehn
- */
 public class CacheSim {
 
     private static final int ENDERECOS_POR_BLOCO = 4;
