@@ -2,6 +2,9 @@ package br.unisc.computador;
 
 import br.unisc.enums.PoliticaSubstituicao;
 import br.unisc.main.Utility;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public class MemoriaCache {
     
@@ -58,13 +61,13 @@ public class MemoriaCache {
         byte[] dadosBloco;
         
         BlocoCache[] conjunto = conjuntos[indiceConjunto];
-        BlocoCache blocoEncontrado = lookup(conjunto, tag);
+        Optional<BlocoCache> bloco = lookup(conjunto, tag);
         
         quantidadeBuscas++;
 
-        if (blocoEncontrado != null) {
+        if (bloco.isPresent()) {
             quantidadeHits++;
-            dadosBloco = blocoEncontrado.getDados();
+            dadosBloco = bloco.get().getDados();
         } else {
             quantidadeMisses++;
             dadosBloco = memoriaPrincipal.getBlocoPorEndereco(endereco);            
@@ -142,17 +145,8 @@ public class MemoriaCache {
      * @param tag Tag do endereço
      * @return Bloco encontrado, ou nulo caso não encontrado
      */
-    private BlocoCache lookup(BlocoCache[] conjunto, int tag) {
-        BlocoCache blocoEncontrado = null;
-        
-        for (BlocoCache bloco : conjunto) {
-            if (bloco.isValido() && bloco.getTag() == tag) {
-                blocoEncontrado = bloco;
-                break;
-            }
-        }
-        
-        return blocoEncontrado;
+    private Optional<BlocoCache> lookup(BlocoCache[] conjunto, int tag) {
+        return Arrays.stream(conjunto).filter(c -> c.isValido() && c.getTag() == tag).findFirst();
     }
     
     /**
