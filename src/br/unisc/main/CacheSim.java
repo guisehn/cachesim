@@ -6,6 +6,7 @@
 
 package br.unisc.main;
 
+import br.unisc.computador.MemoriaCache;
 import br.unisc.computador.MemoriaPrincipal;
 import br.unisc.enums.Politica;
 import br.unisc.exceptions.ArquivoInvalidoException;
@@ -56,12 +57,23 @@ public class CacheSim {
         int index = (int)Utility.log2(numeroConjuntos);
         int tag = tamanhoEndereco - index - offset;
         
+        MemoriaCache memoriaCache = new MemoriaCache(memoriaPrincipal, tamanhoEndereco, tamanhoCache * 1024, ENDERECOS_POR_BLOCO,
+                numeroConjuntos);
+        
+        for (Integer endereco : enderecos) {
+            byte dados = memoriaCache.buscarEndereco(endereco);
+        }
+        
+        int quantidadeHits = memoriaCache.getQuantidadeHits();
+        int quantidadeBuscas = memoriaCache.getQuantidadeBuscas();
+        int hitRate = (quantidadeHits * 100) / quantidadeBuscas;
+        
         System.out.println("   Tam MP: " + Utility.humanReadableByteCount(memoriaPrincipal.getTamanhoMemoria()));
         System.out.println("Tam Cache: " + tamanhoCache + " KB");
         System.out.println(" Endereço: " + tamanhoEndereco + " bits - " + tag + ", " + index + ", " + offset + " bits" +
                 " (rotulo, conjunto, palavra)");
         System.out.println(" Política: " + politica.getNome());
-        System.out.println(" Hit-rate: TO-DO");
+        System.out.println(" Hit-rate: " + hitRate + "%");
     }
     
     private static void erroArgumentos(Exception ex) {

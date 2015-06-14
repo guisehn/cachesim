@@ -8,6 +8,7 @@ package br.unisc.main;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Random;
 
 /**
  *
@@ -28,6 +29,12 @@ public class Utility {
     
     public static double log2(double n) {
         return Math.log10(n) / Math.log10(2);
+    }
+    
+    public static int randInt(int min, int max) {
+        Random rand = new Random();
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+        return randomNum;
     }
     
 }
