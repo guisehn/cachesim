@@ -10,7 +10,7 @@ package br.unisc.enums;
  *
  * @author guilhermesehn
  */
-public enum Politica {
+public enum PoliticaSubstituicao {
     
     ALE {
         @Override

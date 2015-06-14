@@ -6,6 +6,7 @@
 
 package br.unisc.computador;
 
+import br.unisc.enums.PoliticaSubstituicao;
 import br.unisc.main.Utility;
 
 /**
@@ -21,6 +22,7 @@ public class MemoriaCache {
     private final int tamanhoConjunto;
     private final int offset;
     private final int index;
+    private final PoliticaSubstituicao politicaSubstituicao;
     
     private int quantidadeBuscas;
     private int quantidadeHits;
@@ -32,7 +34,8 @@ public class MemoriaCache {
     // Primeiro índice = conjunto. Segundo índice = offset do bloco
     private final BlocoCache[][] conjuntos;
     
-    public MemoriaCache(MemoriaPrincipal mp, int tamanhoEndereco, int tamanhoCache, int tamanhoBloco, int quantidadeConjuntos) {
+    public MemoriaCache(MemoriaPrincipal mp, int tamanhoEndereco, int tamanhoCache, int tamanhoBloco, int quantidadeConjuntos,
+            PoliticaSubstituicao politicaSubstituicao) {
         this.memoriaPrincipal = mp;
         this.tamanhoEndereco = tamanhoEndereco;
         this.tamanhoCache = tamanhoCache;
@@ -40,6 +43,7 @@ public class MemoriaCache {
         this.quantidadeConjuntos = quantidadeConjuntos;
         this.offset = (int)Utility.log2(tamanhoBloco);
         this.index = (int)Utility.log2(quantidadeConjuntos);
+        this.politicaSubstituicao = politicaSubstituicao;
         this.quantidadeBuscas = 0;
         this.quantidadeMisses = 0;
         this.quantidadeHits = 0;
@@ -84,19 +88,27 @@ public class MemoriaCache {
         } else {
             quantidadeMisses++;
             dadosBloco = memoriaPrincipal.getBlocoPorEndereco(endereco);
-            
-            // por enquanto apenas aleatório
+
             blocoEncontrado = new BlocoCache();
             blocoEncontrado.setValido(true);
             blocoEncontrado.setTag(tag);
             blocoEncontrado.setDados(dadosBloco);
             
-            int posicao = Utility.randInt(0, tamanhoConjunto - 1);
-            conjunto[posicao] = blocoEncontrado;
+            gravarCache(conjunto, blocoEncontrado);
         }
 
         int i = endereco & ((1 << offset) - 1); // deixa apenas o offset
         return dadosBloco[i];
+    }
+    
+    private void gravarCache(BlocoCache[] conjunto, BlocoCache bloco) {
+        if (politicaSubstituicao == PoliticaSubstituicao.ALE) {
+            int posicao = Utility.randInt(0, tamanhoConjunto - 1);
+            conjunto[posicao] = bloco;
+            return;
+        }
+
+        // to-do: outras políticas de substituições
     }
     
     public int getQuantidadeBuscas() {

@@ -8,7 +8,7 @@ package br.unisc.main;
 
 import br.unisc.computador.MemoriaCache;
 import br.unisc.computador.MemoriaPrincipal;
-import br.unisc.enums.Politica;
+import br.unisc.enums.PoliticaSubstituicao;
 import br.unisc.exceptions.ArquivoInvalidoException;
 
 /**
@@ -22,13 +22,13 @@ public class CacheSim {
     public static void main(String[] args) {
         int tamanhoCache;
         int numeroConjuntos;
-        Politica politica;
+        PoliticaSubstituicao politica;
         String caminhoArquivoEnderecos;
         
         try {
             tamanhoCache = Integer.valueOf(args[0]);
             numeroConjuntos = Integer.valueOf(args[1]);
-            politica = Politica.valueOf(args[2].toUpperCase());
+            politica = PoliticaSubstituicao.valueOf(args[2].toUpperCase());
             caminhoArquivoEnderecos = args[3];
         } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException ex) {
             erroArgumentos(ex);
@@ -38,7 +38,8 @@ public class CacheSim {
         lerArquivo(tamanhoCache, numeroConjuntos, politica, caminhoArquivoEnderecos);
     }
     
-    private static void lerArquivo(int tamanhoCache, int numeroConjuntos, Politica politica, String caminhoArquivoEnderecos) {
+    private static void lerArquivo(int tamanhoCache, int numeroConjuntos, PoliticaSubstituicao politicaSubstituicao,
+            String caminhoArquivoEnderecos) {
         ArquivoEnderecos arquivoEnderecos = new ArquivoEnderecos(caminhoArquivoEnderecos);
         Integer[] enderecos;
         
@@ -54,10 +55,10 @@ public class CacheSim {
         MemoriaPrincipal memoriaPrincipal = new MemoriaPrincipal(tamanhoEndereco, ENDERECOS_POR_BLOCO);
         
         MemoriaCache memoriaCache = new MemoriaCache(memoriaPrincipal, tamanhoEndereco, tamanhoCache * 1024, ENDERECOS_POR_BLOCO,
-                numeroConjuntos);
+                numeroConjuntos, politicaSubstituicao);
         
         for (Integer endereco : enderecos) {
-            byte dados = memoriaCache.buscarEndereco(endereco);
+            memoriaCache.buscarEndereco(endereco);
         }
         
         int quantidadeHits = memoriaCache.getQuantidadeHits();
@@ -68,7 +69,7 @@ public class CacheSim {
         System.out.println("Tam Cache: " + tamanhoCache + " KB");
         System.out.println(" Endereço: " + tamanhoEndereco + " bits - " + memoriaCache.getTag() + ", " + memoriaCache.getIndex()
                 + ", " + memoriaCache.getOffset() + " bits (rotulo, conjunto, palavra)");
-        System.out.println(" Política: " + politica.getNome());
+        System.out.println(" Política: " + politicaSubstituicao.getNome());
         System.out.println(" Hit-rate: " + hitRate + "%");
     }
     
