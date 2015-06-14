@@ -54,7 +54,12 @@ public class MemoriaCache {
             }
         }
     }
-
+    
+    /**
+     * Busca endereço na memória cache, caso não encontre busca na memória principal e salva na cache
+     * @param endereco Endereço a ser buscado
+     * @return Dado do endereço
+     */
     public byte buscarEndereco(int endereco) {
         int tag = getTag(endereco);
         int indiceConjunto = getIndex(endereco);
@@ -78,6 +83,13 @@ public class MemoriaCache {
         return dadosBloco[offset];
     }
     
+    /**
+     * Grava bloco em conjunto da memória cache, utilizando política de substituição caso necessário
+     * @param conjunto Conjunto em que o bloco deve ser guardado
+     * @param tag Tag do bloco
+     * @param dadosBloco Dados do bloco
+     * @return Objeto do bloco salvo na memória cache
+     */
     private BlocoCache gravarCache(BlocoCache[] conjunto, int tag, byte[] dadosBloco) {
         int posicao = 0;
         
@@ -93,50 +105,6 @@ public class MemoriaCache {
         bloco.setDados(dadosBloco);
         
         return bloco;
-    }
-    
-    public int getTamanhoCache() {
-        return tamanhoCache;
-    }
-    
-    public int getQuantidadeBuscas() {
-        return quantidadeBuscas;
-    }
-    
-    public int getQuantidadeMisses() {
-        return quantidadeMisses;
-    }
-    
-    public int getQuantidadeConjuntos() {
-        return quantidadeConjuntos;
-    }
-    
-    public int getQuantidadeHits() {
-        return quantidadeHits;
-    }
-    
-    public int getTamanhoIndex() {
-        return tamanhoIndex;
-    }
-    
-    public int getTamanhoOffset() {
-        return tamanhoOffset;
-    }
-    
-    public int getTamanhoTag() {
-        return tamanhoEndereco - tamanhoIndex - tamanhoOffset;
-    }
-    
-    public double getHitRate() {
-        return (double)quantidadeHits / (double)quantidadeBuscas;
-    }
-    
-    public double getMissRate() {
-        return (double)quantidadeMisses / (double)quantidadeBuscas;
-    }
-    
-    public PoliticaSubstituicao getPoliticaSubstituicao() {
-        return politicaSubstituicao;
     }
     
     /**
@@ -176,6 +144,58 @@ public class MemoriaCache {
      */
     private int getTag(int endereco) {
         return endereco >> (tamanhoOffset + tamanhoIndex); // tag = endereço - index - offset
+    }
+
+    /**
+     * Calcula hit-rate (relação entre hits e quantidade de buscas)
+     * @return Hit-rate
+     */
+    public double getHitRate() {
+        return (double)quantidadeHits / (double)quantidadeBuscas;
+    }
+    
+    /**
+     * Calcula miss-rate (relação entre misses e quantidade de buscas)
+     * @return Miss-rate
+     */
+    public double getMissRate() {
+        return (double)quantidadeMisses / (double)quantidadeBuscas;
+    }
+
+    public int getQuantidadeBuscas() {
+        return quantidadeBuscas;
+    }
+    
+    public int getQuantidadeHits() {
+        return quantidadeHits;
+    }
+    
+    public int getQuantidadeMisses() {
+        return quantidadeMisses;
+    }
+    
+    public int getTamanhoCache() {
+        return tamanhoCache;
+    }
+    
+    public int getQuantidadeConjuntos() {
+        return quantidadeConjuntos;
+    }
+    
+    public int getTamanhoIndex() {
+        return tamanhoIndex;
+    }
+    
+    public int getTamanhoOffset() {
+        return tamanhoOffset;
+    }
+    
+    public int getTamanhoTag() {
+        return tamanhoEndereco - tamanhoIndex - tamanhoOffset;
+    }
+    
+    public PoliticaSubstituicao getPoliticaSubstituicao() {
+        return politicaSubstituicao;
     }
     
 }
