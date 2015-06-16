@@ -22,7 +22,7 @@ public enum TipoPoliticaSubstituicao {
 
         @Override
         public PoliticaSubstituicao getPoliticaSubstituicao() {
-            throw new UnsupportedOperationException("Not supported yet.");
+            return new PoliticaSubstituicaoCOM();
         }
     },
 
@@ -46,7 +46,7 @@ public enum TipoPoliticaSubstituicao {
 
         @Override
         public PoliticaSubstituicao getPoliticaSubstituicao() {
-            throw new UnsupportedOperationException("Not supported yet.");
+            return new PoliticaSubstituicaoLRU();
         }
     };
     
