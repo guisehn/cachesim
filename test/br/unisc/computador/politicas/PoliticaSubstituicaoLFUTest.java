@@ -1,4 +1,3 @@
-
 package br.unisc.computador.politicas;
 
 import org.junit.After;
@@ -8,10 +7,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author guilhermesehn
- */
 public class PoliticaSubstituicaoLFUTest {
     
     public PoliticaSubstituicaoLFUTest() {
