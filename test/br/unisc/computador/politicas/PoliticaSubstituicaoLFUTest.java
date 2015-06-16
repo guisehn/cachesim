@@ -36,7 +36,6 @@ public class PoliticaSubstituicaoLFUTest {
     @Test
     public void testarPoliticaSubstituicao() {
         Object[] conjunto = new Object[] { new Object(), new Object(), new Object(), new Object() };
-        
         PoliticaSubstituicaoLFU politica = new PoliticaSubstituicaoLFU();
 
         // Blocos gravados na ordem: 1, 0, 3, 2
@@ -46,7 +45,7 @@ public class PoliticaSubstituicaoLFUTest {
         politica.marcarBlocoGravado(conjunto[3]);
         politica.marcarBlocoGravado(conjunto[2]);
 
-        // Visita, logo, aumenta a frequência do bloco 3. Agora:
+        // Visita o bloco 3, logo aumenta a sua frequência. Agora:
         // Frequencia bloco 0 = 1
         // Frequencia bloco 1 = 1
         // Frequencia bloco 2 = 1
@@ -85,11 +84,22 @@ public class PoliticaSubstituicaoLFUTest {
         politica.marcarBlocoGravado(conjunto[2]);
 
         // Agora o bloco 1 é o mais antigo da cache novamente com frequência mínima,
-        // e de deve ser apontado para substituição.
+        // portanto deve ser apontado para substituição.
         assertEquals(1, politica.calcularPosicaoSubstituicao(conjunto));
         
-        // Bloco regravado.
+        // Bloco 1 regravado.
         politica.marcarBlocoGravado(conjunto[1]);
+        
+        // Visita bloco 0, aumentando a sua frequência para 2. Agora:
+        // Frequencia bloco 0 = 2
+        // Frequencia bloco 1 = 1
+        // Frequencia bloco 2 = 1
+        // Frequencia bloco 3 = 2
+        politica.marcarBlocoLido(conjunto[0]);
+        
+        // Os blocos com frequência mínima agora são o 1 e o 2. Sendo o 2 o mais antigo,
+        // este deverá ser marcado para substituição.
+        assertEquals(2, politica.calcularPosicaoSubstituicao(conjunto));
     }
     
 }
