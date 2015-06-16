@@ -1,6 +1,7 @@
 package br.unisc.computador;
 
-import br.unisc.enums.PoliticaSubstituicao;
+import br.unisc.computador.politicas.PoliticaSubstituicao;
+import br.unisc.computador.politicas.TipoPoliticaSubstituicao;
 import br.unisc.main.Utility;
 import java.util.Arrays;
 import java.util.Optional;
@@ -27,7 +28,7 @@ public class MemoriaCache {
     // Primeiro índice = conjunto. Segundo índice = tamanhoOffset do bloco
     private final BlocoCache[][] conjuntos;
     
-    public MemoriaCache(MemoriaPrincipal mp, int tamanhoCache, int quantidadeConjuntos, PoliticaSubstituicao politica) {
+    public MemoriaCache(MemoriaPrincipal mp, int tamanhoCache, int quantidadeConjuntos, TipoPoliticaSubstituicao politica) {
         this.memoriaPrincipal = mp;
         this.tamanhoBloco = mp.getTamanhoBloco();
         this.tamanhoEndereco = mp.getTamanhoEndereco();
@@ -35,7 +36,7 @@ public class MemoriaCache {
         this.quantidadeConjuntos = quantidadeConjuntos;
         this.tamanhoOffset = (int)Utility.log2(tamanhoBloco);
         this.tamanhoIndex = (int)Utility.log2(quantidadeConjuntos);
-        this.politicaSubstituicao = politica;
+        this.politicaSubstituicao = politica.getPoliticaSubstituicao();
         this.quantidadeBuscas = 0;
         this.quantidadeMisses = 0;
         this.quantidadeHits = 0;
@@ -89,18 +90,13 @@ public class MemoriaCache {
      * @return Objeto do bloco salvo na memória cache
      */
     private BlocoCache gravarCache(BlocoCache[] conjunto, int tag, byte[] dadosBloco) {
-        int posicao = 0;
-        
-        if (politicaSubstituicao == PoliticaSubstituicao.ALE) {
-            posicao = Utility.randInt(0, tamanhoConjunto - 1);
-        }
-
-        // to-do: outras políticas de substituição
+        int posicao = politicaSubstituicao.calcularPosicaoSubstituicao(conjunto);
 
         BlocoCache bloco = conjunto[posicao];
         bloco.setValido(true);
         bloco.setTag(tag);
         bloco.setDados(dadosBloco);
+        politicaSubstituicao.marcarBlocoGravado(bloco);
         
         return bloco;
     }

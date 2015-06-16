@@ -2,7 +2,7 @@ package br.unisc.main;
 
 import br.unisc.computador.MemoriaCache;
 import br.unisc.computador.MemoriaPrincipal;
-import br.unisc.enums.PoliticaSubstituicao;
+import br.unisc.computador.politicas.TipoPoliticaSubstituicao;
 import br.unisc.exceptions.ArquivoInvalidoException;
 
 public class CacheSim {
@@ -12,13 +12,13 @@ public class CacheSim {
     public static void main(String[] args) {
         int tamanhoCache;
         int numeroConjuntos;
-        PoliticaSubstituicao politica;
+        TipoPoliticaSubstituicao politica;
         String caminhoArquivoEnderecos;
         
         try {
             tamanhoCache = Integer.valueOf(args[0]);
             numeroConjuntos = Integer.valueOf(args[1]);
-            politica = PoliticaSubstituicao.valueOf(args[2].toUpperCase());
+            politica = TipoPoliticaSubstituicao.valueOf(args[2].toUpperCase());
             caminhoArquivoEnderecos = args[3];
         } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException ex) {
             erroArgumentos(ex);
@@ -28,7 +28,7 @@ public class CacheSim {
         lerArquivo(tamanhoCache, numeroConjuntos, politica, caminhoArquivoEnderecos);
     }
     
-    private static void lerArquivo(int tamanhoCache, int numeroConjuntos, PoliticaSubstituicao politicaSubstituicao,
+    private static void lerArquivo(int tamanhoCache, int numeroConjuntos, TipoPoliticaSubstituicao politicaSubstituicao,
             String caminhoArquivoEnderecos) {
         ArquivoEnderecos arquivoEnderecos = new ArquivoEnderecos(caminhoArquivoEnderecos);
         Integer[] enderecos;
