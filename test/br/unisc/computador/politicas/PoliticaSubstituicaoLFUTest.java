@@ -39,23 +39,56 @@ public class PoliticaSubstituicaoLFUTest {
         
         PoliticaSubstituicaoLFU politica = new PoliticaSubstituicaoLFU();
 
+        // Blocos gravados na ordem: 1, 0, 3, 2
+        // No momento em que são gravados, os blocos ficam com frequência = 1
         politica.marcarBlocoGravado(conjunto[1]);
         politica.marcarBlocoGravado(conjunto[0]);
         politica.marcarBlocoGravado(conjunto[3]);
         politica.marcarBlocoGravado(conjunto[2]);
 
+        // Visita, logo, aumenta a frequência do bloco 3. Agora:
+        // Frequencia bloco 0 = 1
+        // Frequencia bloco 1 = 1
+        // Frequencia bloco 2 = 1
+        // Frequencia bloco 3 = 2
         politica.marcarBlocoLido(conjunto[3]);
         
+        // Os blocos 0, 1 e 2 possuem as frequências mínimas (F = 1), portanto
+        // um deles deverá ser substituído.
+        // Para o "desempate", o registro mais antigo, ou seja, gravado há
+        // mais tempo na cache será o escolhido para ser substituído.
+        // Como o bloco 1 foi o primeiro a ser colocado na cache, e possui a
+        // frequência mínima, este deve ser escolhido para ser substituído.
         assertEquals(1, politica.calcularPosicaoSubstituicao(conjunto));
+        
+        // Bloco 1 é marcado como gravado novamente na cache (assim, torna-se
+        // o mais recente a ser gravado na cache). Sua frequência foi novamente
+        // setada para 1.
         politica.marcarBlocoGravado(conjunto[1]);
         
+        // Os blocos 0, 1 e 2 possuem as frequências mínimas (F = 1), portanto
+        // um deles deverá ser substituído.
+        // Agora, o mais antigo é o bloco 0, seguido pelo bloco 2, e depois pelo
+        // bloco 1, que foi regravado na cache.
+        // Sendo o mais antigo, o bloco 0 deve ser agora marcado para ser substituído.
         assertEquals(0, politica.calcularPosicaoSubstituicao(conjunto));
+        
+        // Bloco 0 regravado.
         politica.marcarBlocoGravado(conjunto[0]);
         
+        // Os blocos 0, 1 e 2 possuem as frequências mínimas (F = 1), portanto
+        // um deles deverá ser substituído.
+        // O bloco 2 é o mais antigo da cache agora, então ele é o escolhido.
         assertEquals(2, politica.calcularPosicaoSubstituicao(conjunto));
+        
+        // Bloco 2 regravado.
         politica.marcarBlocoGravado(conjunto[2]);
 
+        // Agora o bloco 1 é o mais antigo da cache novamente com frequência mínima,
+        // e de deve ser apontado para substituição.
         assertEquals(1, politica.calcularPosicaoSubstituicao(conjunto));
+        
+        // Bloco regravado.
         politica.marcarBlocoGravado(conjunto[1]);
     }
     
