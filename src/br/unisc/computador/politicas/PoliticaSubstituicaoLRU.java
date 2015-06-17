@@ -32,13 +32,13 @@ public class PoliticaSubstituicaoLRU implements PoliticaSubstituicao {
     }
 
     @Override
-    public void marcarBlocoLido(Object bloco) {
+    public void marcarBlocoLido(Object[] conjunto, Object bloco) {
         InfoBloco info = getInfoBloco(bloco);
         info.setTimestampUltimaVisita(timestamp.incrementAndGet());
     }
     
     @Override
-    public void marcarBlocoGravado(Object bloco) {
+    public void marcarBlocoGravado(Object[] conjunto, Object bloco) {
         InfoBloco info = getInfoBloco(bloco);
         info.setTimestampUltimaVisita(timestamp.incrementAndGet());
     }

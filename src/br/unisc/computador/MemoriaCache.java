@@ -72,6 +72,7 @@ public class MemoriaCache {
         if (bloco.isPresent()) {
             quantidadeHits++;
             dadosBloco = bloco.get().getDados();
+            politicaSubstituicao.marcarBlocoLido(conjunto, bloco.get());
         } else {
             quantidadeMisses++;
             dadosBloco = memoriaPrincipal.getBlocoPorEndereco(endereco);            
@@ -96,7 +97,7 @@ public class MemoriaCache {
         bloco.setValido(true);
         bloco.setTag(tag);
         bloco.setDados(dadosBloco);
-        politicaSubstituicao.marcarBlocoGravado(bloco);
+        politicaSubstituicao.marcarBlocoGravado(conjunto, bloco);
         
         return bloco;
     }

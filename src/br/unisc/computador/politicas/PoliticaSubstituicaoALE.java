@@ -10,9 +10,9 @@ public class PoliticaSubstituicaoALE implements PoliticaSubstituicao {
     }
 
     @Override
-    public void marcarBlocoGravado(Object bloco) { }
+    public void marcarBlocoGravado(Object[] conjunto, Object bloco) { }
     
     @Override
-    public void marcarBlocoLido(Object bloco) { }
+    public void marcarBlocoLido(Object[] conjunto, Object bloco) { }
     
 }
