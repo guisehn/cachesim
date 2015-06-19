@@ -91,15 +91,41 @@ public class MemoriaCache {
      * @return Objeto do bloco salvo na memória cache
      */
     private BlocoCache gravarCache(BlocoCache[] conjunto, int tag, byte[] dadosBloco) {
-        int posicao = politicaSubstituicao.calcularPosicaoSubstituicao(conjunto);
+        int posicao = buscarPosicaoLivre(conjunto);
+        
+        // Caso não possua posição livre, utiliza a política de substitiuição
+        if (posicao == -1)
+            posicao = politicaSubstituicao.calcularPosicaoSubstituicao(conjunto);
 
+        // Substitui o bloco
         BlocoCache bloco = conjunto[posicao];
         bloco.setValido(true);
         bloco.setTag(tag);
         bloco.setDados(dadosBloco);
+        
+        // Informa à política de substituição que o bloco foi gravado
         politicaSubstituicao.marcarBlocoGravado(conjunto, bloco);
         
         return bloco;
+    }
+    
+    /**
+     * Busca uma posição livre dentro do conjunto
+     * @param conjunto Conjunto para buscar a posição livre
+     * @return Retorna o índice, ou -1 caso não encontre.
+     */
+    private int buscarPosicaoLivre(BlocoCache[] conjunto) {
+        int posicaoLivre = -1;
+
+        for (int i = 0; i < conjunto.length; i++) {
+            BlocoCache bloco = conjunto[i];
+            if (!bloco.isValido()) {
+                posicaoLivre = i;
+                break;
+            }
+        }
+
+        return posicaoLivre;
     }
     
     /**
