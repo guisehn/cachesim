@@ -28,7 +28,7 @@ public class MemoriaCache {
     // Primeiro índice = conjunto. Segundo índice = tamanhoOffset do bloco
     private final BlocoCache[][] conjuntos;
     
-    public MemoriaCache(MemoriaPrincipal mp, int tamanhoCache, int quantidadeConjuntos, TipoPoliticaSubstituicao politica) {
+    public MemoriaCache(MemoriaPrincipal mp, int tamanhoCache, int quantidadeConjuntos, PoliticaSubstituicao politica) {
         this.memoriaPrincipal = mp;
         this.tamanhoBloco = mp.getTamanhoBloco();
         this.tamanhoEndereco = mp.getTamanhoEndereco();
@@ -36,7 +36,7 @@ public class MemoriaCache {
         this.quantidadeConjuntos = quantidadeConjuntos;
         this.tamanhoOffset = (int)Utility.log2(tamanhoBloco);
         this.tamanhoIndex = (int)Utility.log2(quantidadeConjuntos);
-        this.politicaSubstituicao = politica.getPoliticaSubstituicao();
+        this.politicaSubstituicao = politica;
         this.quantidadeBuscas = 0;
         this.quantidadeMisses = 0;
         this.quantidadeHits = 0;

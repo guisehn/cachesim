@@ -28,7 +28,7 @@ public class CacheSim {
         lerArquivo(tamanhoCache, numeroConjuntos, politica, caminhoArquivoEnderecos);
     }
     
-    private static void lerArquivo(int tamanhoCache, int numeroConjuntos, TipoPoliticaSubstituicao politicaSubstituicao,
+    private static void lerArquivo(int tamanhoCache, int numeroConjuntos, TipoPoliticaSubstituicao tipoPoliticaSubstituicao,
             String caminhoArquivoEnderecos) {
         ArquivoEnderecos arquivoEnderecos = new ArquivoEnderecos(caminhoArquivoEnderecos);
         Integer[] enderecos;
@@ -43,7 +43,8 @@ public class CacheSim {
 
         int tamanhoEndereco = arquivoEnderecos.getTamanhoEndereco();
         MemoriaPrincipal mp = new MemoriaPrincipal(tamanhoEndereco, ENDERECOS_POR_BLOCO);
-        MemoriaCache cache = new MemoriaCache(mp, tamanhoCache * 1024, numeroConjuntos, politicaSubstituicao);
+        MemoriaCache cache = new MemoriaCache(mp, tamanhoCache * 1024, numeroConjuntos,
+                tipoPoliticaSubstituicao.getPoliticaSubstituicao());
         
         buscarEnderecos(cache, enderecos);
         imprimirResultados(mp, cache);
