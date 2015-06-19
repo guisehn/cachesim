@@ -45,7 +45,7 @@ public class PoliticaSubstituicaoLRUTest {
         // recente) agora deve estar: 1, 0, 2, 3
         politica.marcarBlocoLido(conjunto, conjunto[3]);
         
-        // O bloco visitado por último é o 1, logo este deve ser marcado para ser
+        // O bloco visitado há mais tempo é o 1, logo este deve ser marcado para ser
         // substituído.
         assertEquals(1, politica.calcularPosicaoSubstituicao(conjunto));
         
