@@ -20,6 +20,10 @@ public class CacheSim {
             numeroConjuntos = Integer.valueOf(args[1]);
             politica = TipoPoliticaSubstituicao.valueOf(args[2].toUpperCase());
             caminhoArquivoEnderecos = args[3];
+            
+            if (tamanhoCache < 1 || numeroConjuntos < 1) {
+                throw new IllegalArgumentException();
+            }
         } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException ex) {
             erroArgumentos(ex);
             return;
