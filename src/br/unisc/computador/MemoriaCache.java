@@ -1,7 +1,6 @@
 package br.unisc.computador;
 
 import br.unisc.computador.politicas.PoliticaSubstituicao;
-import br.unisc.computador.politicas.TipoPoliticaSubstituicao;
 import br.unisc.main.Utility;
 import java.util.Arrays;
 import java.util.Optional;
@@ -34,13 +33,22 @@ public class MemoriaCache {
         this.tamanhoEndereco = mp.getTamanhoEndereco();
         this.tamanhoCache = tamanhoCache;
         this.quantidadeConjuntos = quantidadeConjuntos;
-        this.tamanhoOffset = (int)Utility.log2(tamanhoBloco);
-        this.tamanhoIndex = (int)Utility.log2(quantidadeConjuntos);
         this.politicaSubstituicao = politica;
         this.quantidadeBuscas = 0;
         this.quantidadeMisses = 0;
         this.quantidadeHits = 0;
 
+        // Calcula offset
+        this.tamanhoOffset = (int)Utility.log2(tamanhoBloco);
+        
+        // Calcula índice do conjunto
+        int quantidadeBitsIndex = (int)Utility.log2(quantidadeConjuntos);
+        if (quantidadeBitsIndex + this.tamanhoOffset > this.tamanhoEndereco) {
+            this.tamanhoIndex = this.tamanhoEndereco - this.tamanhoOffset;
+        } else {
+            this.tamanhoIndex = quantidadeBitsIndex;
+        }
+        
         // Calcula o tamanho do conjunto com base nas demais informações
         this.tamanhoConjunto = (tamanhoCache) / (quantidadeConjuntos * tamanhoBloco);
 
