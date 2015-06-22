@@ -30,4 +30,19 @@ public class Utility {
         return randomNum;
     }
     
+    public static void printVerbose(String format, Object... args) {
+        if (CacheSim.VERBOSE_MODE) {
+            System.out.format(format, args);
+        }
+    }
+    
+    public static String toBinary(int n, int padding) {
+        String bin = Integer.toBinaryString(n);
+        
+        if (padding == 0)
+            return bin;
+        
+        return String.format("%1$" + padding + "s", bin).replace(' ', '0');  
+    }
+    
 }

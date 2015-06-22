@@ -1,6 +1,7 @@
 package br.unisc.computador;
 
 import br.unisc.computador.politicas.PoliticaSubstituicao;
+import br.unisc.main.CacheSim;
 import br.unisc.main.Utility;
 import java.util.Arrays;
 import java.util.Optional;
@@ -75,19 +76,30 @@ public class MemoriaCache {
         BlocoCache[] conjunto = conjuntos[indiceConjunto];
         Optional<BlocoCache> bloco = lookup(conjunto, tag);
         
+        Utility.printVerbose("Buscando %s (conjunto %S)",
+            Utility.toBinary(endereco, memoriaPrincipal.getTamanhoEndereco()),
+            indiceConjunto);
+        
         quantidadeBuscas++;
 
         if (bloco.isPresent()) {
+            Utility.printVerbose(" - Hit");
+            
             quantidadeHits++;
             dadosBloco = bloco.get().getDados();
             politicaSubstituicao.marcarBlocoLido(conjunto, bloco.get());
         } else {
+            Utility.printVerbose(" - Miss");
+            
             quantidadeMisses++;
             dadosBloco = memoriaPrincipal.getBlocoPorEndereco(endereco);            
             gravarCache(conjunto, tag, dadosBloco);
         }
 
         int offset = getOffset(endereco);
+        
+        Utility.printVerbose("\n");
+        
         return dadosBloco[offset];
     }
     
@@ -102,8 +114,10 @@ public class MemoriaCache {
         int posicao = buscarPosicaoLivre(conjunto);
         
         // Caso não possua posição livre, utiliza a política de substitiuição
-        if (posicao == -1)
+        if (posicao == -1) {
+            Utility.printVerbose(" - substituído");
             posicao = politicaSubstituicao.calcularPosicaoSubstituicao(conjunto);
+        }
 
         // Substitui o bloco
         BlocoCache bloco = conjunto[posicao];
@@ -113,6 +127,8 @@ public class MemoriaCache {
         
         // Informa à política de substituição que o bloco foi gravado
         politicaSubstituicao.marcarBlocoGravado(conjunto, bloco);
+        
+        Utility.printVerbose(" - bloco %s", posicao);
         
         return bloco;
     }

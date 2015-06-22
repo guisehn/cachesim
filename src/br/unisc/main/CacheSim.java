@@ -8,6 +8,7 @@ import br.unisc.exceptions.ArquivoInvalidoException;
 public class CacheSim {
 
     private static final int ENDERECOS_POR_BLOCO = 4;
+    public static boolean VERBOSE_MODE;
     
     public static void main(String[] args) {
         int tamanhoCache;
@@ -28,6 +29,8 @@ public class CacheSim {
             erroArgumentos(ex);
             return;
         }
+        
+        VERBOSE_MODE = (args.length >= 5 && args[4].toLowerCase().equals("--verbose"));
 
         lerArquivo(tamanhoCache, numeroConjuntos, politica, caminhoArquivoEnderecos);
     }
@@ -62,7 +65,9 @@ public class CacheSim {
         }
     }
     
-    private static void imprimirResultados(MemoriaPrincipal mp, MemoriaCache cache) {        
+    private static void imprimirResultados(MemoriaPrincipal mp, MemoriaCache cache) {   
+        Utility.printVerbose("\n\n");
+        
         String tamanhoMemoriaPrincipal = Utility.humanReadableByteCount(mp.getTamanhoMemoria());
 
         System.out.format("   Tam MP: %s", tamanhoMemoriaPrincipal);
@@ -71,8 +76,17 @@ public class CacheSim {
         System.out.format("Tam Cache: %s KB", (cache.getTamanhoCache() / 1024));
         System.out.println();
 
-        System.out.format(" Endereço: %s bits, %s, %s, %s bits (rotulo, conjunto, palavra)", mp.getTamanhoEndereco(),
+        if (cache.getTamanhoTag() == 0) {
+            System.out.format(" Endereço: %s bits, %s, %s bits (conjunto, palavra)", mp.getTamanhoEndereco(),
+                    cache.getTamanhoIndex(), cache.getTamanhoOffset());
+        } else if (cache.getTamanhoIndex() == 0) {
+            System.out.format(" Endereço: %s bits, %s, %s bits (rotulo, palavra)", mp.getTamanhoEndereco(),
+                    cache.getTamanhoTag(), cache.getTamanhoOffset());
+        } else {
+            System.out.format(" Endereço: %s bits, %s, %s, %s bits (rotulo, conjunto, palavra)", mp.getTamanhoEndereco(),
                 cache.getTamanhoTag(), cache.getTamanhoIndex(), cache.getTamanhoOffset());
+        }
+
         System.out.println();
 
         System.out.format(" Hit-rate: %s%%", Utility.doubleToString(cache.getHitRate() * 100));
