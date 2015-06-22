@@ -115,8 +115,10 @@ public class MemoriaCache {
         
         // Caso não possua posição livre, utiliza a política de substitiuição
         if (posicao == -1) {
-            Utility.printVerbose(" - substituído");
             posicao = politicaSubstituicao.calcularPosicaoSubstituicao(conjunto);
+            Utility.printVerbose(" - substituído bloco da posição %s", posicao);
+        } else {
+            Utility.printVerbose(" - bloco gravado na posição %s", posicao);
         }
 
         // Substitui o bloco
@@ -127,8 +129,6 @@ public class MemoriaCache {
         
         // Informa à política de substituição que o bloco foi gravado
         politicaSubstituicao.marcarBlocoGravado(conjunto, bloco);
-        
-        Utility.printVerbose(" - bloco %s", posicao);
         
         return bloco;
     }
